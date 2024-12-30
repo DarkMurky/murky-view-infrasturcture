@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: view-deployment
+  labels:
+    app: view
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: view
+  template:
+    metadata:
+      labels:
+        app: view
+    spec:
+      initContainers:
+        - name: init-mydb
+          image: busybox
+          command: ['sh', '-c', 'until nslookup lens-api-service.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']
+      containers:
+        - name: lens-api
+          image: kvait/murky-view-app:1
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              value: "http://lens-api-service:3001"
