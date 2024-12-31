@@ -15,14 +15,14 @@ spec:
         app: view
     spec:
       initContainers:
-        - name: init-mydb
+        - name: init-api
           image: busybox
           command: ['sh', '-c', 'until nslookup lens-api-service.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']
       containers:
-        - name: lens-api
-          image: kvait/murky-view-app:1
+        - name: lens-manager
+          image: kvait/murky-manager-app:dev
           ports:
             - containerPort: 3000
           env:
-            - name: DB_HOST
+            - name: NEXT_PUBLIC_DB_HOST
               value: "http://lens-api-service:3001"
