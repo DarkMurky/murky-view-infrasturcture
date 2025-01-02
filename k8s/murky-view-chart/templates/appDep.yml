@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.murkyManagerApp.name }}
+spec:
+  replicas: {{ .Values.murkyManagerApp.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.murkyManagerApp.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.murkyManagerApp.name }}
+    spec:
+      initContainers:
+        - name: init-api
+          image: busybox
+          command: ['sh', '-c', 'until nslookup {{ .Values.murkyApi.service.name }}.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']
+      containers:
+        - name: {{ .Values.murkyManagerApp.name }}
+          image: "{{ .Values.murkyManagerApp.image.repository }}:{{ .Values.murkyManagerApp.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.murkyManagerApp.containerPort }}
+          imagePullPolicy: Always
+          # env:
+          #   - name: NEXT_PUBLIC_DB_HOST
+          #     value: "http://{{ .Values.murkyApi.service.name }}:{{ .Values.murkyApi.service.port }}"

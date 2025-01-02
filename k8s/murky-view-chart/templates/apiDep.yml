@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.murkyApi.name }}
+spec:
+  replicas: {{ .Values.murkyApi.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.murkyApi.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.murkyApi.name }}
+    spec:
+      initContainers:
+        - name: init-db
+          image: busybox
+          command: ['sh', '-c', 'until nslookup {{ .Values.postgres.service.name }}.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']
+      containers:
+        - name: {{ .Values.murkyApi.name }}
+          image: "{{ .Values.murkyApi.image.repository }}:{{ .Values.murkyApi.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.murkyApi.containerPort }}
+          imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              value: "postgres-service"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db-pass
+            - name: DATABASE_URL
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres-service:5432/mydb?schema=public"

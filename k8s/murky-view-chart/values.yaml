@@ -1,0 +1,52 @@
+murkyManagerApp:
+  name: manager-app
+  replicas: 1
+  containerPort: 3000
+  image:
+    repository: kvait/murky-manager-app
+    tag: dev
+  service:
+    name: manager-app-service
+    type: LoadBalancer
+    port: 80
+    targetPort: 3000
+
+murkyApi:
+  name: murky-api
+  replicas: 1
+  containerPort: 3001
+  image:
+    repository: kvait/murky-manager-server-app
+    tag: dev
+  service:
+    name: murky-api-service
+    type: ClusterIP
+    port: 3001
+    targetPort: 3001
+
+postgres:
+  name: postgres-db
+  replicas: 1
+  containerPort: 5432
+  image:
+    repository: postgres
+    tag: "13"
+  service:
+    name: postgres-service
+    type: ClusterIP
+    port: 5432
+    targetPort: 5432
+  volumes:
+    storage:
+      name: postgres-storage
+      pvcName: postgres-pvc
+      pvName: postgres-pv
+      mountPath: /var/lib/postgresql/data
+      size: 2Gi
+  user: VVNFUk5BTUU=
+  password: UEFTU1dPUkQ=
+
+ingress:
+  name: ingress-app
+  host: localhost
+  

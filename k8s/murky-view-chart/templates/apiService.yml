@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.murkyApi.service.name }}
+spec:
+  type: {{ .Values.murkyApi.service.type }}
+  ports:
+    - port: {{ .Values.murkyApi.service.port }}
+      targetPort: {{ .Values.murkyApi.service.targetPort }}
+  selector:
+    app: {{ .Values.murkyApi.name }}
