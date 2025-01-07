@@ -2,22 +2,20 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.ingress.host }}
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1  # Rewrite the path
 spec:
   ingressClassName: nginx
   rules:
   - host: {{ .Values.ingress.host }}
     http:
       paths:
-      - path: /api/(.*)  # Match all paths starting with /api/
+      - path: /api/lenses
         pathType: ImplementationSpecific
         backend:
           service:
             name: {{ .Values.murkyApi.service.name }}
             port:
               number: {{ .Values.murkyApi.service.port }}
-      - path: /  # Match all other paths for Next.js
+      - path: /
         pathType: Prefix
         backend:
           service:
