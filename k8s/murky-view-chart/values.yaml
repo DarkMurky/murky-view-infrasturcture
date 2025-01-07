@@ -7,7 +7,7 @@ murkyManagerApp:
     tag: dev
   service:
     name: manager-app-service
-    type: LoadBalancer
+    type: ClusterIP
     port: 80
     targetPort: 3000
 
