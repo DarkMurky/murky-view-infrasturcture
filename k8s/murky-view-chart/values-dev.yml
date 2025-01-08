@@ -48,5 +48,5 @@ postgres:
 
 ingress:
   name: ingress-app
-  host: view.cursetheweb.online
+  host: dev.cursetheweb.online
   
