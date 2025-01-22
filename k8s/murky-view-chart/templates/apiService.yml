@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.murkyApi.service.name }}
+  namespace: {{ .Values.murkyApi.namespace }}
 spec:
   type: {{ .Values.murkyApi.service.type }}
   ports:

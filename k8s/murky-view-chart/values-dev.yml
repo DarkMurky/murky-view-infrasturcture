@@ -1,5 +1,6 @@
 murkyManagerApp:
   name: manager-app
+  namespace: dev
   replicas: 1
   containerPort: 3000
   image:
@@ -13,6 +14,7 @@ murkyManagerApp:
 
 murkyApi:
   name: murky-api
+  namespace: dev
   replicas: 1
   containerPort: 3001
   image:
@@ -26,6 +28,7 @@ murkyApi:
 
 postgres:
   name: postgres-db
+  namespace: dev
   replicas: 1
   containerPort: 5432
   image:

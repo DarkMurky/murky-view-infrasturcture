@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.murkyApi.name }}
+  namespace: {{ .Values.murkyApi.namespace }}
 spec:
   replicas: {{ .Values.murkyApi.replicas }}
   selector:
