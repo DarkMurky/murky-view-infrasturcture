@@ -12,10 +12,8 @@ spec:
       labels:
         app: {{ .Values.murkyApi.name }}
     spec:
-      initContainers:
-        - name: init-db
-          image: busybox
-          command: ['sh', '-c', 'until nslookup {{ .Values.postgres.service.name }}.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done;']
+      nodeSelector:
+        role: backend
       containers:
         - name: {{ .Values.murkyApi.name }}
           image: "{{ .Values.murkyApi.image.repository }}:{{ .Values.murkyApi.image.tag }}"

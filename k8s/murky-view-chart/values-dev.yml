@@ -4,7 +4,7 @@ murkyManagerApp:
   containerPort: 3000
   image:
     repository: kvait/murky-manager-app
-    tag: dev
+    tag: tru
   service:
     name: manager-app-service
     type: ClusterIP
@@ -43,8 +43,6 @@ postgres:
       pvName: postgres-pv
       mountPath: /var/lib/postgresql/data
       size: 2Gi
-  user: VVNFUk5BTUU=
-  password: UEFTU1dPUkQ=
 
 ingress:
   name: ingress-app
