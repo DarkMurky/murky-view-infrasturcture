@@ -1,5 +1,5 @@
 #!/bin/bash
-bucket_name="your-bucket-name"
+bucket_name="lens-view-bucket"
 # Check if the bucket exists
 if aws s3api head-bucket --bucket $bucket_name 2>/dev/null; then
     echo "Bucket $bucket_name exists"
