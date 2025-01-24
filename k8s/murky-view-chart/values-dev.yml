@@ -5,7 +5,7 @@ murkyManagerApp:
   containerPort: 3000
   image:
     repository: kvait/murky-manager-app
-    tag: tru
+    tag: dev
   service:
     name: manager-app-service
     type: ClusterIP
