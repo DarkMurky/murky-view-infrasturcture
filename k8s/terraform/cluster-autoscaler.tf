@@ -88,7 +88,4 @@ resource "helm_release" "cluster_autoscaler" {
     name  = "awsRegion"
     value = "eu-north-1"
   }
-
-  # doesn't really beed to depend on metrics server, just following tutorial
-  depends_on = [helm_release.metrics_server]
 }
