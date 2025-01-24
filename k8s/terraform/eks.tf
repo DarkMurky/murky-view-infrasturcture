@@ -1,8 +1,3 @@
-locals {
-  eks_name    = "my-eks-cluster"  # Replace with your desired EKS cluster name
-  eks_version = "1.21"             # Replace with your desired EKS version
-}
-
 resource "aws_iam_role" "eks" {
   name = "${var.environment}-${local.eks_name}-eks-cluster"
 
