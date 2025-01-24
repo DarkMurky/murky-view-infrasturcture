@@ -1,8 +1,3 @@
-variable "environment" {
-  description = "The environment to deploy to (dev or prod)"
-  type        = string
-}
-
 resource "aws_efs_file_system" "eks" {
   creation_token = "eks-${var.environment}"
 

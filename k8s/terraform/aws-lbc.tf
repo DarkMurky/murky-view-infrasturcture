@@ -1,8 +1,3 @@
-variable "environment" {
-  description = "The environment to deploy to (dev or prod)"
-  type        = string
-}
-
 data "aws_iam_policy_document" "aws_lbc" {
   statement {
     effect = "Allow"
