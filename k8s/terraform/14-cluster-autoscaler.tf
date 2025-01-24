@@ -64,6 +64,7 @@ resource "aws_eks_pod_identity_association" "cluster_autoscaler" {
   role_arn        = aws_iam_role.cluster_autoscaler.arn
 }
 
+# deploy to eks
 resource "helm_release" "cluster_autoscaler" {
   name = "autoscaler"
 
@@ -85,8 +86,9 @@ resource "helm_release" "cluster_autoscaler" {
   # MUST be updated to match your region 
   set {
     name  = "awsRegion"
-    value = "us-east-2"
+    value = "eu-north-1"
   }
 
+  # doesn't really beed to depend on metrics server, just following tutorial
   depends_on = [helm_release.metrics_server]
 }

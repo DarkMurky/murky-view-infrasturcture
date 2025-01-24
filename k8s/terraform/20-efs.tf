@@ -4,10 +4,6 @@ resource "aws_efs_file_system" "eks" {
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
   encrypted        = true
-
-  # lifecycle_policy {
-  #   transition_to_ia = "AFTER_30_DAYS"
-  # }
 }
 
 resource "aws_efs_mount_target" "zone_a" {
@@ -74,12 +70,10 @@ resource "helm_release" "efs_csi_driver" {
   ]
 }
 
-# Optional since we already init helm provider (just to make it self contained)
 data "aws_eks_cluster" "eks_v2" {
   name = aws_eks_cluster.eks.name
 }
 
-# Optional since we already init helm provider (just to make it self contained)
 data "aws_eks_cluster_auth" "eks_v2" {
   name = aws_eks_cluster.eks.name
 }
