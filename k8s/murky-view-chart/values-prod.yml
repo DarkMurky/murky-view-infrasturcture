@@ -1,5 +1,6 @@
 murkyManagerApp:
   name: manager-app
+  namespace: prod
   replicas: 1
   containerPort: 3000
   image:
@@ -13,6 +14,7 @@ murkyManagerApp:
 
 murkyApi:
   name: murky-api
+  namespace: prod
   replicas: 1
   containerPort: 3001
   image:
@@ -26,6 +28,7 @@ murkyApi:
 
 postgres:
   name: postgres-db
+  namespace: prod
   replicas: 1
   containerPort: 5432
   image:
@@ -43,10 +46,9 @@ postgres:
       pvName: postgres-pv
       mountPath: /var/lib/postgresql/data
       size: 2Gi
-  user: VVNFUk5BTUU=
-  password: UEFTU1dPUkQ=
 
 ingress:
   name: ingress-app
+  namespace: prod
   host: prod.cursetheweb.online
   
