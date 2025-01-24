@@ -1,8 +1,3 @@
-variable "environment" {
-  description = "The environment to deploy to (dev or prod)"
-  type        = string
-}
-
 locals {
   eks_name    = "my-eks-cluster"  # Replace with your desired EKS cluster name
   eks_version = "1.21"             # Replace with your desired EKS version
