@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "ebs_csi_driver" {
 }
 
 resource "aws_iam_role" "ebs_csi_driver" {
-  name               = "${aws_eks_cluster.eks.name}-ebs-csi-driver"
+  name               = "${aws_eks_cluster.eks.name}-ebs-csi-driver-${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.ebs_csi_driver.json
 }
 
@@ -25,7 +25,7 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_driver" {
 }
 
 resource "aws_iam_policy" "ebs_csi_driver_encryption" {
-  name = "${aws_eks_cluster.eks.name}-ebs-csi-driver-encryption"
+  name = "${aws_eks_cluster.eks.name}-ebs-csi-driver-encryption-${var.environment}"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -57,7 +57,7 @@ resource "aws_eks_pod_identity_association" "ebs_csi_driver" {
 
 resource "aws_eks_addon" "ebs_csi_driver" {
   cluster_name             = aws_eks_cluster.eks.name
-  addon_name               = "aws-ebs-csi-driver"
+  addon_name               = "aws-ebs-csi-driver-${var.environment}"
   addon_version            = "v1.31.0-eksbuild.1"
   service_account_role_arn = aws_iam_role.ebs_csi_driver.arn
 
