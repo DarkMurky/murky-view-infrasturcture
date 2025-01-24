@@ -4,7 +4,6 @@ resource "aws_efs_file_system" "eks" {
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
   encrypted        = true
-
 }
 
 resource "aws_efs_mount_target" "zone_a" {
@@ -53,7 +52,7 @@ resource "helm_release" "efs_csi_driver" {
   repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver/"
   chart      = "aws-efs-csi-driver"
   namespace  = "kube-system"
-  version    = "3.0.3"
+  version    = "3.0.5"
 
   set {
     name  = "controller.serviceAccount.name"
