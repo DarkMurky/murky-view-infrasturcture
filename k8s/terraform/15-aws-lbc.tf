@@ -15,13 +15,15 @@ data "aws_iam_policy_document" "aws_lbc" {
 }
 
 resource "aws_iam_role" "aws_lbc" {
-  name               = "${aws_eks_cluster.eks.name}-aws-lbc-${var.environment}"
+  name               = "${aws_eks_cluster.eks.name}-aws-lbc"
+  name_prefix = local.env
   assume_role_policy = data.aws_iam_policy_document.aws_lbc.json
 }
 
 resource "aws_iam_policy" "aws_lbc" {
   policy = file("./iam/AWSLoadBalancerController.json")
-  name   = "AWSLoadBalancerController-${var.environment}"
+  name   = "AWSLoadBalancerController"
+  name_prefix = local.env
 }
 
 resource "aws_iam_role_policy_attachment" "aws_lbc" {
@@ -37,7 +39,7 @@ resource "aws_eks_pod_identity_association" "aws_lbc" {
 }
 
 resource "helm_release" "aws_lbc" {
-  name = "aws-load-balancer-controller-${var.environment}"
+  name = "aws-load-balancer-controller"
 
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"

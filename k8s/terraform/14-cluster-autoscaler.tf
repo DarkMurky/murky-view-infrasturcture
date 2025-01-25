@@ -1,5 +1,5 @@
 resource "aws_iam_role" "cluster_autoscaler" {
-  name = "${aws_eks_cluster.eks.name}-cluster-autoscaler-${var.environment}"
+  name = "${aws_eks_cluster.eks.name}-cluster-autoscaler"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -19,7 +19,8 @@ resource "aws_iam_role" "cluster_autoscaler" {
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {
-  name = "${aws_eks_cluster.eks.name}-cluster-autoscaler-${var.environment}"
+  name = "${aws_eks_cluster.eks.name}-cluster-autoscaler"
+  name_prefix = local.env
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -64,9 +65,9 @@ resource "aws_eks_pod_identity_association" "cluster_autoscaler" {
   role_arn        = aws_iam_role.cluster_autoscaler.arn
 }
 
-# Deploy to EKS
+# deploy to eks
 resource "helm_release" "cluster_autoscaler" {
-  name = "autoscaler-${var.environment}"
+  name = "autoscaler"
 
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
@@ -88,4 +89,7 @@ resource "helm_release" "cluster_autoscaler" {
     name  = "awsRegion"
     value = "eu-north-1"
   }
+
+  # doesn't really beed to depend on metrics server, just following tutorial
+  depends_on = [helm_release.metrics_server]
 }
