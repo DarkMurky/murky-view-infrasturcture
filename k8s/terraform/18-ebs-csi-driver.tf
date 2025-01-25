@@ -25,8 +25,7 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_driver" {
 }
 
 resource "aws_iam_policy" "ebs_csi_driver_encryption" {
-  name = "${aws_eks_cluster.eks.name}-ebs-csi-driver-encryption"
-  name_prefix = local.env
+  name = "${local.env}-${aws_eks_cluster.eks.name}-ebs-csi-driver-encryption"
 
   policy = jsonencode({
     Version = "2012-10-17"

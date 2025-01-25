@@ -19,8 +19,7 @@ resource "aws_iam_role" "cluster_autoscaler" {
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {
-  name = "${aws_eks_cluster.eks.name}-cluster-autoscaler"
-  name_prefix = local.env
+  name = "${local.env}-${aws_eks_cluster.eks.name}-cluster-autoscaler"
 
   policy = jsonencode({
     Version = "2012-10-17"
