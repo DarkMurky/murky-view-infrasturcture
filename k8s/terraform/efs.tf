@@ -1,9 +1,13 @@
 resource "aws_efs_file_system" "eks" {
-  creation_token = "eks"
+  creation_token = "eks-${var.environment}"
 
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
   encrypted        = true
+
+  # lifecycle_policy {
+  #   transition_to_ia = "AFTER_30_DAYS"
+  # }
 }
 
 resource "aws_efs_mount_target" "zone_a" {
@@ -37,7 +41,7 @@ data "aws_iam_policy_document" "efs_csi_driver" {
 }
 
 resource "aws_iam_role" "efs_csi_driver" {
-  name               = "${local.env}-${aws_eks_cluster.eks.name}-efs-csi-driver"
+  name               = "${aws_eks_cluster.eks.name}-efs-csi-driver-${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.efs_csi_driver.json
 }
 
@@ -47,7 +51,7 @@ resource "aws_iam_role_policy_attachment" "efs_csi_driver" {
 }
 
 resource "helm_release" "efs_csi_driver" {
-  name = "aws-efs-csi-driver"
+  name = "aws-efs-csi-driver-${var.environment}"
 
   repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver/"
   chart      = "aws-efs-csi-driver"
@@ -70,10 +74,12 @@ resource "helm_release" "efs_csi_driver" {
   ]
 }
 
+# Optional since we already init helm provider (just to make it self contained)
 data "aws_eks_cluster" "eks_v2" {
   name = aws_eks_cluster.eks.name
 }
 
+# Optional since we already init helm provider (just to make it self contained)
 data "aws_eks_cluster_auth" "eks_v2" {
   name = aws_eks_cluster.eks.name
 }
@@ -86,7 +92,7 @@ provider "kubernetes" {
 
 resource "kubernetes_storage_class_v1" "efs" {
   metadata {
-    name = "efs"
+    name = "efs-${var.environment}"
   }
 
   storage_provisioner = "efs.csi.aws.com"
