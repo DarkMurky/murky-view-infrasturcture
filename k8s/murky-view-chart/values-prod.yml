@@ -19,7 +19,7 @@ murkyApi:
   containerPort: 3001
   image:
     repository: kvait/murky-manager-server-app
-    tag: dev
+    tag: prod
   service:
     name: murky-api-service
     type: ClusterIP
