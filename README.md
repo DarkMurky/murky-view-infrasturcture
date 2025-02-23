@@ -21,3 +21,7 @@ Apply using terraform
 ```bash
 terraform apply -auto-approve -var="environment=<ENVIRONMENT>"
 ```
+Apply helm charts
+```bash
+helm install <ENVIRONMENT>-lens-view ./murky-view-chart -f ./murky-view-chart/dev-<ENVIRONMENT>.yml
+```
